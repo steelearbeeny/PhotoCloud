@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>PhotoCloud</groupId>
+  <artifactId>PhotoCloud</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  
+   
+  
+  
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <release>19</release>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.3</version>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+	  
+	  <!--
+	  <dependency>
+  <groupId>software.amazon.awssdk</groupId>
+  <artifactId>aws-sdk-java</artifactId>
+  <version>2.29.44</version>
+</dependency>
+
+-->
+
+<dependency>
+  		<groupId>com.zaxxer</groupId>
+  		<artifactId>HikariCP</artifactId>
+  		<version>6.0.0</version>
+  		<scope>provided</scope>
+  	</dependency>
+      
+      
+               <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.29.44</version>
+            <scope>provided</scope>
+        </dependency>
+
+<dependency>
+    <groupId>org.jobrunr</groupId>
+    <artifactId>jobrunr</artifactId>
+    <version>7.3.2</version>
+    <scope>provided</scope>
+</dependency>
+
+	  
+<!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
+<dependency>
+    <groupId>com.drewnoakes</groupId>
+    <artifactId>metadata-extractor</artifactId>
+    <version>2.19.0</version>
+    <scope>provided</scope>
+</dependency>
+
+
+
+	  <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
+<dependency>
+    <groupId>com.jcraft</groupId>
+    <artifactId>jsch</artifactId>
+    <version>0.1.55</version>
+    <scope>provided</scope>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/com.flickr4java/flickr4java -->
+<dependency>
+    <groupId>com.flickr4java</groupId>
+    <artifactId>flickr4java</artifactId>
+    <version>3.0.9</version>
+    <scope>provided</scope>
+</dependency>
+
+
+
+
+
+
+<!-- https://mvnrepository.com/artifact/org.json/json -->
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20230227</version>
+    <scope>provided</scope>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.6.0</version>
+    <scope>provided</scope>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.15.2</version>
+    <scope>provided</scope>
+</dependency>
+
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.10.1</version>
+    <scope>provided</scope>
+</dependency>
+
+
+
+<dependency>
+  <!-- Include the sdk as a dependency -->
+  <groupId>com.microsoft.graph</groupId>
+  <artifactId>microsoft-graph</artifactId>
+  <!--x-release-please-start-version-->
+  <version>6.13.0</version>
+  <!--x-release-please-end-->
+  <scope>provided</scope>
+</dependency>
+<dependency>
+  <!-- This dependency is only needed if you are using a TokenCredential object for authentication -->
+  <groupId>com.azure</groupId>
+  <artifactId>azure-identity</artifactId>
+  <version>1.11.0</version>
+  <scope>provided</scope>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-fileupload2-javax -->
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-fileupload2-javax</artifactId>
+    <version>2.0.0-M2</version>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client -->
+
+<dependency>
+    <groupId>com.google.oauth-client</groupId>
+    <artifactId>google-oauth-client</artifactId>
+    <version>1.39.0</version>
+</dependency>
+
+<dependency>
+        <groupId>com.google.oauth-client</groupId>
+        <artifactId>google-oauth-client-servlet</artifactId>
+        <version>1.39.0</version> 
+    </dependency>
+
+<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+
+<dependency>
+    <groupId>com.google.api-client</groupId>
+    <artifactId>google-api-client</artifactId>
+    <version>2.8.1</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/com.google.photos.library/google-photos-library-client -->
+<!--
+<dependency>
+    <groupId>com.google.photos.library</groupId>
+    <artifactId>google-photos-library-client</artifactId>
+    <version>1.7.3</version>
+</dependency>
+-->
+<!--
+<dependency>
+    <groupId>com.google.apis</groupId>
+    <artifactId>google-api-services-photoslibrary</artifactId>
+    <version>v1-rev1-1.23.0</version>
+</dependency>
+-->
+
+
+
+<dependency>
+    <groupId>com.google.apis</groupId>
+    <artifactId>google-api-services-oauth2</artifactId>
+    <version>v2-rev20200213-2.0.0</version>
+</dependency>
+
+
+
+<!-- TEST THESE ARE SUPPOSED TO BE NEWER ? https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http -->
+<!--
+<dependency>
+    <groupId>com.google.auth</groupId>
+    <artifactId>google-auth-library-oauth2-http</artifactId>
+    <version>1.38.0</version>
+</dependency>
+-->
+<!-- https://mvnrepository.com/artifact/com.google.auth/google-auth-library-credentials -->
+<!--
+<dependency>
+    <groupId>com.google.auth</groupId>
+    <artifactId>google-auth-library-credentials</artifactId>
+    <version>1.38.0</version>
+</dependency>
+-->
+
+  </dependencies>
+</project>
