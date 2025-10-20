@@ -292,7 +292,8 @@ public class SharedPhotoManager {
 				
 				try
 				{
-					gPhoto.OpenStream();
+					//gPhoto.OpenStream();
+					gPhoto.LoadByteArray();
 					res = ImageUtil.IsValidImage(gPhoto.inputStream);
 				}
 				catch(Exception ex)

@@ -149,8 +149,8 @@ public class FlickrWriter extends WriterBase {
 		try
 		{
 			
-			inPhoto.OpenStream();
-			
+			//inPhoto.OpenStream();
+			inPhoto.LoadByteArray();
 		
 			u=flickrConnection.flickr.getUploader();
 			
@@ -187,9 +187,9 @@ public class FlickrWriter extends WriterBase {
 						// TODO: handle exception
 						Log.Error(logger,mn,"Couldnt reset stream. " + e.toString());
 						
-						inPhoto.CloseStream();
-						inPhoto.inputStream=null;
-						inPhoto.OpenStream();
+						//inPhoto.CloseStream();
+						//inPhoto.inputStream=null;
+						//inPhoto.OpenStream();
 						
 						
 					}
@@ -209,19 +209,20 @@ public class FlickrWriter extends WriterBase {
 						// TODO: handle exception
 						Log.Error(logger,mn,"Couldnt reset stream. " + e.toString());
 						
-						inPhoto.CloseStream();
-						inPhoto.inputStream=null;
-						inPhoto.OpenStream();
+						//inPhoto.CloseStream();
+						//inPhoto.inputStream=null;
+						//inPhoto.OpenStream();
 					}
 					
 					
 					
 					Thread.sleep(1000);
 				}
-			}
+			} //end for
 			
 			if(uploadSuccess==false)
 			{
+				//inPhoto.CloseStream();
 				Log.Error(logger, mn,"Could not upload after retries: " + MAX_RETRIES);
 				throw new Exception("Could not upload");
 			}

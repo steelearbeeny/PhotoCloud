@@ -3,6 +3,7 @@ package com.sga.common.http;
 import java.awt.image.BufferedImage;
 //import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpClient.Redirect;
@@ -45,6 +47,7 @@ import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
+import com.sga.common.generic.GenericPhoto;
 import com.sga.common.generic.MetadataItem;
 import com.sga.common.generic.Response;
 import com.sga.common.log.Log;
@@ -381,6 +384,131 @@ public class HttpUtils {
 	}
 	
 
+	public static ReturnValue<String> PostPhoto(String url, GenericPhoto photo, Object... formVars)
+	{
+		URL turl; 
+		HttpURLConnection conn=null;
+		
+		byte[] bytes=null;
+		String result="";
+		String mn="HttpUtils::PostStream";
+		InputStream inputStream=null;
+		
+		String httpStatus="";
+		int i=0;
+		String formName;
+		String formValue;
+		DataOutputStream dataOutputStream = null;
+		
+		try
+		{
+			Log.Info(mn, "Method Entered");
+			
+			Log.Info(mn, "URL: " + url);
+			
+			turl= new URL(url);
+			
+			
+			
+			
+			conn=(HttpURLConnection) turl.openConnection();
+			conn.setRequestMethod("POST");
+			
+			//conn.setRequestProperty("Content-Type", "application/octet-stream");
+		
+			conn.setDoOutput(true);
+			
+		    String boundary = "----WebKitFormBoundary" + System.currentTimeMillis(); // Example boundary
+		    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+			
+		    dataOutputStream= new DataOutputStream(conn.getOutputStream());
+		    
+			if(formVars != null && formVars.length > 0)
+			{
+				
+				
+				i=0;
+				formName="";
+				formValue="";
+				for(Object p : formVars)
+				{
+					
+					if(i%2==0)
+						formName=Utils.ToString(p);
+					else
+					{
+						formValue=Utils.ToString(p);
+
+						Log.Info(mn,"Appending form variable:" + formName + " " + formValue);
+						
+					    dataOutputStream.writeBytes("--" + boundary + "\r\n");
+					    dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" + formName + "\"\r\n"); 
+					    dataOutputStream.writeBytes("\r\n");
+					    dataOutputStream.writeBytes(formValue); 
+					    dataOutputStream.writeBytes("\r\n");
+						
+						formName=formValue="";
+					}
+					
+					i++;
+					
+				} // end for
+				
+				
+				
+				
+			} //end if
+			
+			
+			//now write the file
+			dataOutputStream.writeBytes("--" + boundary + "\r\n");
+		    dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"" + photo.name + "\"\r\n");
+		    dataOutputStream.writeBytes("Content-Type: application/octet-stream\r\n"); // Or appropriate MIME type
+		    dataOutputStream.writeBytes("\r\n");
+		    
+
+			dataOutputStream.write(photo.imageData);
+			dataOutputStream.writeBytes("\r\n");
+			dataOutputStream.writeBytes("--" + boundary + "--\r\n");
+			dataOutputStream.flush();
+			
+						
+			inputStream=conn.getInputStream();
+	
+			bytes = inputStream.readAllBytes();
+	        
+	        httpStatus=Utils.ToString(conn.getResponseCode());
+	        
+	        
+	        result=new String(bytes, StandardCharsets.UTF_8); // Specify character encoding
+	        
+		}
+		
+		catch(Exception ex)
+		{
+			try
+			{
+				httpStatus=Utils.ToString(conn.getResponseCode());
+				result=httpStatus + " - " + HttpStatus.GetDescription(httpStatus);
+			}
+			catch(Exception ex2)
+			{
+				httpStatus="-1";
+				result="";
+				Log.Error(mn,ex2.toString());
+			}
+			result+=" - " + ex.toString();
+			Log.Error(mn, "Exception: " +result);
+		}
+		finally
+		{
+			Utils.QuietClose(dataOutputStream);
+			Utils.QuietClose(inputStream);
+		}
+			
+		return new ReturnValue<String>(httpStatus,result);
+		
+	}
 	
 	
 	

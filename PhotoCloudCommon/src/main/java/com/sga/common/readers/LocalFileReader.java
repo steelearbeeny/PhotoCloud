@@ -129,7 +129,7 @@ public class LocalFileReader extends ReaderBase {
 						
 				
 				photo.Geocode();
-				
+				photo.LoadByteArray();
 				
 				items.add(photo);
 				

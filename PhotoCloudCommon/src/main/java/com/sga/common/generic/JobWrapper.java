@@ -9,6 +9,7 @@ import org.jobrunr.jobs.context.JobDashboardLogger;
 
 import com.sga.common.dataaccess.DataUtil;
 import com.sga.common.log.Log;
+import com.sga.common.processor.PhotoProcessor;
 import com.sga.common.readers.DummyReader;
 import com.sga.common.readers.FlickrReader;
 import com.sga.common.readers.GooglePhotoReader;
@@ -84,11 +85,13 @@ public class JobWrapper {
 		//IReader reader=null;
 		ReaderBase reader=null;
 		WriterBase writer=null;
-		
+		PhotoProcessor photoProcessor=null;
 		
 		try
 		{
 		
+			photoProcessor=new PhotoProcessor(jobContext,sessionData,jobConfiguration);
+			
 			switch(jobConfiguration.sourceProvider)
 			{
 			
@@ -194,7 +197,7 @@ public class JobWrapper {
 		//Pump
 		//
 		
-		GenericPhoto p;
+		GenericPhoto p=null;
 		long numRead=0;
 		long numWritten=0;
 		long exceptions=0;
@@ -207,6 +210,8 @@ public class JobWrapper {
 				numRead++;
 				Log.Info(logger, mn,p.toString());
 				
+				photoProcessor.Process(p);
+				
 				writer.write(p);
 				numWritten++;
 			}
@@ -214,6 +219,9 @@ public class JobWrapper {
 			{
 				Log.Error(logger, mn,"Exception: " + ex.toString());
 				exceptions++;
+				
+				if(p!=null)
+					p.CloseStream();
 				
 				UpdateJobStatus(jobContext, 
 						Utils.ToString(jobContext.getJobId()), 

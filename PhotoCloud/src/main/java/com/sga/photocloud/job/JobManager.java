@@ -364,6 +364,19 @@ public class JobManager extends HttpServlet {
 		if(dum!=null && dum.length() > 0)
 			jobConfiguration.albumUrl=Utils.ToString(dum);
 		
+
+		//
+		//Caption and Facial Processing Flags
+		//
+		
+		dum=Utils.GetMapValueA(p, "captionSwitch");
+		if(dum!=null && dum.length() > 0)
+			jobConfiguration.captionSwitch=Utils.ToInt(dum);
+
+		dum=Utils.GetMapValueA(p, "facialSwitch");
+		if(dum!=null && dum.length() > 0)
+			jobConfiguration.facialSwitch=Utils.ToInt(dum);
+		
 		
 		
 		//set the source albums if any
@@ -421,10 +434,13 @@ public class JobManager extends HttpServlet {
 				//when the first file is staged
 				//
 				//1=S3 no authentication
-				SQLStr="UPDATE USERJOB SET SCHEDULERJOBID=? WHERE JOBID=? AND USERID=?";
+				SQLStr="UPDATE USERJOB SET SCHEDULERJOBID=?, CAPTIONSWITCH=?::INT, "
+						+ "FACIALSWITCH=?::INT WHERE JOBID=? AND USERID=?::INT";
 			
 				DataUtil.getInstance().ExecuteUpdate(SQLStr,
 					jobId.asUUID().toString(),
+					jobConfiguration.captionSwitch,
+					jobConfiguration.facialSwitch,
 					uniqueId,
 					userId);
 			}
@@ -439,7 +455,9 @@ public class JobManager extends HttpServlet {
 						+ "SCHEDULERJOBID,"
 						+ "SOURCEOAUTHKEY, "
 						+ "TARGETOAUTHKEY,"
-						+ "MODTIME) VALUES(?,'SCHEDULER',?::INT,?::INT,?::INT,?,?,?,?,CURRENT_TIMESTAMP)";
+						+ "CAPTIONSWITCH,"
+						+ "FACIALSWITCH "
+						+ "MODTIME) VALUES(?,'SCHEDULER',?::INT,?::INT,?::INT,?,?,?,?,?::INT,?::INT,CURRENT_TIMESTAMP)";
 				
 				DataUtil.getInstance().ExecuteUpdate(SQLStr,
 						jobId.asUUID().toString(),
@@ -449,7 +467,9 @@ public class JobManager extends HttpServlet {
 						jobConfiguration.uniqueId,
 						jobId.asUUID().toString(),
 						jobConfiguration.sourceToken==null ? null : jobConfiguration.sourceToken.key,
-						jobConfiguration.targetToken==null ? null : jobConfiguration.targetToken.key
+						jobConfiguration.targetToken==null ? null : jobConfiguration.targetToken.key,
+						jobConfiguration.captionSwitch,
+						jobConfiguration.facialSwitch
 						
 						);
 		

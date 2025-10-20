@@ -113,6 +113,11 @@ Installed from  https://github.com/xinyu1205/recognize-anything/tree/main
 conda activate recognize-anything
 conda deactivate
 
+TEST FROM CURL
+curl -X POST -F "file=@/cygdrive/d/Pictures/DSC01673.JPG" http://localhost:5000/inference
+
+
+
 Packages Needed
  _libgcc_mutex      pkgs/main/linux-64::_libgcc_mutex-0.1-main
   _openmp_mutex      pkgs/main/linux-64::_openmp_mutex-5.1-1_gnu

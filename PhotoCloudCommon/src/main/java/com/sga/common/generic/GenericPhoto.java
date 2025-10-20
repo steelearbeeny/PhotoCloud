@@ -1,5 +1,6 @@
 package com.sga.common.generic;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,12 +31,15 @@ public class GenericPhoto {
 	public Integer height;
 	public String format;
 	public String url;
-	public InputStream inputStream=null;
+	
+	public ByteArrayInputStream inputStream=null;
 	public MultiKeyMap<String, MetadataItem> metadata=null; //2 keys - directory & itemid
 	public String ownerName;
 	public String albumName;
 	public GeoData geoData=null;
 	public OauthToken token=null;
+	public byte[] imageData=null;
+	public List<String> tags=new ArrayList<String>();
 	
 	public GenericPhoto()
 	{
@@ -117,7 +121,7 @@ public class GenericPhoto {
 	
 	public List<String> GetTags()
 	{
-		List<String> tags=null;
+		
 		
 		String mn="GenericPhoto::GetTags";
 		
@@ -127,7 +131,7 @@ public class GenericPhoto {
 			return null;
 		}
 		
-		tags=new ArrayList<String>();
+		
 		
 		if(geoData.category.length() > 0)
 			tags.add(QuoteIfSpace(geoData.category));
@@ -221,7 +225,91 @@ public class GenericPhoto {
 	}
 	*/
 	
-	public void OpenStream() throws Exception
+	public void LoadByteArray() throws Exception
+	{
+		InputStream _inputStream = null;
+		
+		if(inputStream!=null) return;
+		
+		URL turl; 
+		HttpURLConnection conn=null;
+		String mn="GenericPhoto::LoadByteArray";
+		
+		Log.Info(mn, "Method Entered");
+		
+
+		turl= new URL(url);
+		
+		if(token==null)
+		{
+			_inputStream=turl.openStream();
+		}
+		else
+		{
+		
+			conn=(HttpURLConnection) turl.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Authorization", "Bearer " + token.tokenResponse);
+
+			_inputStream=conn.getInputStream();
+		}
+	
+		try
+		{
+			imageData=_inputStream.readAllBytes();
+			
+		}
+		catch(Exception ex)
+		{
+			Log.Error(mn, ex);
+			
+		}
+		finally
+		{
+			Utils.QuietClose(_inputStream);
+		}
+		
+		inputStream = new ByteArrayInputStream(imageData);
+		
+		
+	}
+	
+	
+	public void LoadByteArray(InputStream is) throws Exception
+	{
+		
+		
+		if(inputStream!=null) return;
+		
+	
+		String mn="GenericPhoto::LoadByteArray2";
+		
+		Log.Info(mn, "Method Entered");
+		
+		try
+		{
+			imageData=is.readAllBytes();
+			
+		}
+		catch(Exception ex)
+		{
+			Log.Error(mn, ex);
+			
+		}
+		finally
+		{
+			Utils.QuietClose(is);
+		}
+		inputStream = new ByteArrayInputStream(imageData);
+	}
+	
+	
+	
+	
+	
+	
+	/*
+	private void OpenStream() throws Exception
 	{
 		URL turl; 
 		HttpURLConnection conn=null;
@@ -251,14 +339,24 @@ public class GenericPhoto {
 		
 		
 	}
-	
+	*/
+	//CLosing a ByteArrayInputStream doesn nothing
 	public void CloseStream()
 	{
-		if(inputStream==null) return;
+		if(inputStream==null) 
+		{
+			imageData=null;
+			return;
+		}
+			
 		
 		try
 		{
 			inputStream.close();
+			inputStream=null;
+			imageData=null;
+			//GC ??
+			
 		}
 		catch(Exception ex)
 		{

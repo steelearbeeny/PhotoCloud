@@ -77,15 +77,17 @@ export default function SetupJob(props) {
 	const [categorizeSwitch, setCategorizeSwitch] = useState(false);
 		
 	const [albumNamePrefix, setAlbumNamePrefix] = useState("")	
-		const [albumNameSuffix, setAlbumNameSuffix] = useState("")	
+	const [albumNameSuffix, setAlbumNameSuffix] = useState("")	
 	const [autoCreateRadio, setAutoCreateRadio] = useState("auto")
 	const [dateFormat, setDateFormat] = useState("_")
 	const [albumName, setAlbumName] = useState("")		
-		const [jobContent, setJobContent] = useState({});
-		const [exifMetadata, setExifMetadata] = useState("_");
-		const [exifDirectory, setExifDirectory] = useState("_");
-		
+	const [jobContent, setJobContent] = useState({});
+	const [exifMetadata, setExifMetadata] = useState("_");
+	const [exifDirectory, setExifDirectory] = useState("_");
 	
+	const [captionSwitchState, setCaptionSwitchState] = useState(false);
+	const [facialSwitchState, setFacialSwitchState] = useState(false);
+
 	//if(	!(/*props.currentStep==3 && props.selectedTargetProvider!=0 ||*/
 	//	props.currentStep==4 && props.selectedTargetProvider==0))
 	//		return null;
@@ -106,6 +108,32 @@ console.log("SetupJob",props)
 
 	
 /***********************************/	
+
+const switchChange = (e) => {
+	
+
+	if (!e || !e.target || e.target.value==null)
+		return;
+
+	let o = {...props.jobParameters}
+
+	if (e.target.id == "caption-switch") {
+		delete o["captionSwitch"];
+		o["captionSwitch"]=(!captionSwitchState==true) ? "1" : "0";
+		setCaptionSwitchState(!captionSwitchState)	
+		props.setJobParameters(o)
+	}
+
+	if (e.target.id == "facial-switch") {
+		delete o["facialSwitch"];
+		o["facialSwitch"]=(!facialSwitchState==true) ? "1" : "0"
+		setFacialSwitchState(!facialSwitchState)
+		props.setJobParameters(o)	
+	}
+
+	
+};
+
 		
 
 	
@@ -338,6 +366,22 @@ const exifMetadataChange = (e,ele) =>
 			
 			</Grid>
 			
+		
+			<Grid size={{xs: 0, sm:4}} ></Grid>
+			<Grid size={{xs:12, sm:5}} >
+				<FormControlLabel control={<Switch id="caption-switch" checked={captionSwitchState} onChange={switchChange} />} label="Generate image caption and tags" />
+			</Grid>
+			<Grid size={{xs:0, sm: 3}} ></Grid>
+
+			<Grid size={{xs: 0, sm:4}} ></Grid>
+			<Grid size={{xs:12, sm:5}} >
+				<FormControlLabel control={<Switch id="facial-switch" checked={facialSwitchState} onChange={switchChange} />} label="Generate facial recognition database" />
+			</Grid>
+			<Grid size={{xs:0, sm: 3}} ></Grid>
+
+
+
+		
 			{autoCreateRadio=="single" ? <>
 			
 			<Grid size={{xs: 0, sm:3}} ></Grid>
@@ -484,6 +528,8 @@ const exifMetadataChange = (e,ele) =>
 			
 			
 			</> : null}
+			
+			
 
 		
 			

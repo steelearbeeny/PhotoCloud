@@ -511,6 +511,8 @@ public class ICloudSharedAlbumReader extends ReaderBase {
 		p.CloseStream();
 		p.inputStream=bis;
 		*/
+		p.LoadByteArray();
+		
 		super.GenerateDescription(p);
 		
 		Log.Info(logger,mn,p.toString());

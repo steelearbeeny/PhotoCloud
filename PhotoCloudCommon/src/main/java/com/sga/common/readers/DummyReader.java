@@ -58,6 +58,7 @@ public class DummyReader implements IReader {
 		
 		byte[] dum = Files.readAllBytes(path);
 		p=new GenericPhoto();
+		p.imageData=dum;
 		p.inputStream=new ByteArrayInputStream(dum);
 		p.fileSize=(long)dum.length;
 		p.name="DSC_0088.jpg";

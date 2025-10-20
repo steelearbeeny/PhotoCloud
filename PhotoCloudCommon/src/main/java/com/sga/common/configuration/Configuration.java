@@ -6,6 +6,8 @@ public class Configuration {
     public static final int MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
     public static final int MAX_REQUEST_SIZE = 1024 * 1024 * 1024; // 1GB
     public static final String STAGING_DIR = "G:\\upload_staging";
+	public final static String PROCESSING_URL = "http://localhost:5000";
+
   
 
 }

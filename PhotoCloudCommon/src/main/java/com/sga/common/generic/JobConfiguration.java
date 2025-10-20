@@ -22,6 +22,8 @@ public class JobConfiguration {
 	public String exifDirectory;
 	public List<String> sourceAlbums;
 	public String albumUrl;
+	public int captionSwitch;
+	public int facialSwitch;
 	
 	
 	
@@ -45,6 +47,8 @@ public class JobConfiguration {
 		exifDirectory="";
 		sourceAlbums=new ArrayList<String>();
 		albumUrl="";
+		captionSwitch=0;
+		facialSwitch=0;
 	}
 	
 	
@@ -67,6 +71,8 @@ public class JobConfiguration {
 		albumNameSuffix="";
 		sourceAlbums=new ArrayList<String>();
 		albumUrl="";
+		captionSwitch=0;
+		facialSwitch=0;
 		
 	}
 
@@ -76,7 +82,7 @@ public class JobConfiguration {
 		return "JobConfiguration [userId=" + userId + ", sourceProvider=" + sourceProvider + ", targetProvider="
 				+ targetProvider + ", uniqueId=" + uniqueId + ", sourceToken=" + sourceToken + ", targetToken="
 				+ targetToken + ", autoCreateAlbums=" + autoCreateAlbums + ", sourceAlbums " + sourceAlbums.toString() + 
-				", albumUrl=" + albumUrl + "]";
+				", albumUrl=" + albumUrl + ", captionSwitch=" + captionSwitch + ", facialSwitch=" + facialSwitch + "]";
 	}
 	
 	

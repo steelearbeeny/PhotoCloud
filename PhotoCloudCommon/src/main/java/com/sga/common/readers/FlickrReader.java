@@ -201,6 +201,7 @@ public class FlickrReader extends ReaderBase {
 	        
 	        //Log.Info(logger,mn,"Got input stream " + is.toString());
 	        
+	        /*
 	        byte[] imgArray = IoUtils.toByteArray(is);
 	        
 	        Log.Info(logger, mn,"Byte array: " + imgArray.length);
@@ -208,7 +209,9 @@ public class FlickrReader extends ReaderBase {
 	        Utils.QuietClose(is);
 	        is = (InputStream)(new ByteArrayInputStream(imgArray));
 	        gpout.inputStream=is;
+	        */
 	        
+	        gpout.LoadByteArray(is);
 	        
 	        
 	        //

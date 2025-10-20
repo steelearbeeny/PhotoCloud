@@ -3,13 +3,19 @@ package com.sga.photocloud;
 import java.time.LocalDateTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.io.ByteArrayInputStream;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import com.flickr4java.flickr.people.User;
 import com.sga.common.flickr.Albums;
 import com.sga.common.flickr.FlickrConnection;
 import com.sga.common.flickr.Users;
+import com.sga.common.generic.GenericPhoto;
 import com.sga.common.generic.JobConfiguration;
 import com.sga.common.geocode.Geocoder;
 import com.sga.common.google.GoogleAlbum;
@@ -28,8 +34,21 @@ public class App {
 		String mn="App::main";
 		User u=null;
 		String userId;
-
+		GenericPhoto p;
+		ReturnValue<String> rv;
 		
+		Path path = Paths.get("D:\\Pictures\\sgapic3.JPG");
+		
+		byte[] dum = Files.readAllBytes(path);
+		p=new GenericPhoto();
+		p.imageData=dum;
+		p.inputStream=new ByteArrayInputStream(dum);
+		p.fileSize=(long)dum.length;
+		p.name="sgapic3.JPG";
+		
+		rv=HttpUtils.PostPhoto("http://localhost:5000/inference", p, "user","1","person","33");
+		
+		Log.Info(mn, rv.toString());
 		
 		//FlickrConnection f = new FlickrConnection();
 		//Users.Initialize(f);

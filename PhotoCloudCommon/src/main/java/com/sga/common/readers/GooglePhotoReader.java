@@ -217,25 +217,27 @@ public class GooglePhotoReader extends ReaderBase {
 	        			
 			try
 			{
-				gPhoto.OpenStream();
+				//gPhoto.OpenStream();
+				gPhoto.LoadByteArray();
 				res = ImageUtil.IsValidImage(gPhoto.inputStream);
 			}
 			catch(Exception ex)
 			{
 				Log.Error(mn,"Could not open stream...Skipping");
+				gPhoto.CloseStream();
 				return null;
 			}
 			finally
 			{
-				gPhoto.CloseStream();
-				gPhoto.inputStream=null;
+				
+				
 			}
 			
             
             if(!res.success )
             {
             	gPhoto.CloseStream();
-            	gPhoto.inputStream=null;
+            	
             	Log.Info(logger,mn, "The Google photo was not valid...Skipping - "  + res.message);
             	throw new Exception("The file was not a valid Google photo image");
             	

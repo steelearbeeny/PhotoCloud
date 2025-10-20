@@ -38,6 +38,7 @@ public class GooglePhotoWriter extends WriterBase {
 	public String listAlbumsURL = "https://photoslibrary.googleapis.com/v1/albums";
 	public String uploadURL="https://photoslibrary.googleapis.com/v1/uploads";
 	public String batchCreateURL = "https://photoslibrary.googleapis.com/v1/mediaItems:batchCreate";
+	public String defaultAlbumName="FotoFreedom Default Album";
 	
 	public GooglePhotoWriter(JobContext jobContext, Map<String,Object> sessionData, JobConfiguration jobConfiguration) throws Exception
 	{
@@ -112,10 +113,13 @@ public class GooglePhotoWriter extends WriterBase {
 		
 		albumName=GetAlbumName(inPhoto);
 		
-		if(albumName.length() < 1)
+		if(albumName.length() < 1 )
 		{
-			throw new Exception(
-					Log.Error(logger, mn,"Could not get a valid album name. Cannot upload."));
+			
+			albumName=defaultAlbumName;
+			
+			//throw new Exception(
+			//		Log.Error(logger, mn,"Could not get a valid album name. Cannot upload."));
 		}
 		
 		
@@ -125,8 +129,9 @@ public class GooglePhotoWriter extends WriterBase {
 		for(numTries=0;numTries < MAX_RETRIES && uploadSuccess==false; numTries++)
 		{
 			Log.Info(logger, mn,"About to upload. Try Number: " + numTries);
-			inPhoto.OpenStream();
-
+			//inPhoto.OpenStream();
+			inPhoto.LoadByteArray();
+			
 			try
 			{
 				
@@ -175,8 +180,8 @@ public class GooglePhotoWriter extends WriterBase {
 					Log.Error(logger,mn,"Couldnt reset stream. Closing/Opening Instead " + e.toString());
 					
 					inPhoto.CloseStream();
-					inPhoto.inputStream=null;
-					inPhoto.OpenStream();
+					//inPhoto.inputStream=null;
+					//inPhoto.OpenStream();
 					
 					
 				}
@@ -188,6 +193,9 @@ public class GooglePhotoWriter extends WriterBase {
 			
 			
 		} // end for retries
+		
+		
+		inPhoto.CloseStream();
 		
 		if(uploadSuccess==false)
 		{
